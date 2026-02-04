@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Cœur Pour Toi - Saint Valentin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            color: #5a3d5c;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* En-tête avec le cœur */
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            animation: fadeIn 2s ease-out;
+        }
+        
+        .heart-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+        }
+        
+        .heart {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #ff4757;
+            transform: rotate(45deg);
+            animation: heartbeat 1.2s infinite;
+            box-shadow: 0 0 40px rgba(255, 71, 87, 0.6);
+        }
+        
+        .heart:before, .heart:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #ff4757;
+            border-radius: 50%;
+        }
+        
+        .heart:before {
+            top: -50%;
+            left: 0;
+        }
+        
+        .heart:after {
+            top: 0;
+            left: -50%;
+        }
+        
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.2rem;
+            color: #ff0a54;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        
+        /* Bouton pour ouvrir la lettre */
+        .open-letter-btn {
+            display: block;
+            margin: 30px auto;
+            padding: 18px 40px;
+            font-size: 1.3rem;
+            font-weight: 500;
+            background-color: #ff0a54;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(255, 10, 84, 0.4);
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .open-letter-btn:hover {
+            background-color: #ff477e;
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(255, 10, 84, 0.5);
+        }
+        
+        .open-letter-btn:active {
+            transform: translateY(-2px);
+        }
+        
+        /* Section de la lettre (cachée au départ) */
+        .letter-container {
+            display: none;
+            background-color: rgba(255, 255, 255, 0.92);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            animation: slideUp 1.5s ease-out;
+        }
+        
+        .letter-container:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(to right, #ffafbd, #ffc3a0, #ffafbd);
+        }
+        
+        .letter-content {
+            font-size: 1.15rem;
+            line-height: 1.8;
+        }
+        
+        .letter-content p {
+            margin-bottom: 25px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s forwards;
+        }
+        
+        .letter-content p:nth-child(1) { animation-delay: 0.3s; }
+        .letter-content p:nth-child(2) { animation-delay: 0.8s; }
+        .letter-content p:nth-child(3) { animation-delay: 1.3s; }
+        .letter-content p:nth-child(4) { animation-delay: 1.8s; }
+        .letter-content p:nth-child(5) { animation-delay: 2.3s; }
+        
+        .signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            text-align: right;
+            margin-top: 40px;
+            color: #ff0a54;
+            opacity: 0;
+            animation: fadeIn 2s 3s forwards;
+        }
+        
+        /* Fleurs décoratives */
+        .flower {
+            position: absolute;
+            font-size: 1.5rem;
+            color: #ff6b8b;
+            opacity: 0.6;
+            z-index: -1;
+        }
+        
+        .flower-1 { top: 10%; left: 5%; animation: float 6s infinite ease-in-out; }
+        .flower-2 { top: 20%; right: 7%; animation: float 8s infinite ease-in-out reverse; }
+        .flower-3 { bottom: 15%; left: 10%; animation: float 7s infinite ease-in-out; }
+        
+        /* Section photo optionnelle */
+        .photo-section {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .photo-placeholder {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            background-color: #f8f8f8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 5px solid #ffc3a0;
+            overflow: hidden;
+        }
+        
+        .photo-placeholder i {
+            font-size: 4rem;
+            color: #ffafbd;
+        }
+        
+        /* Contrôle de la musique */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #ff0a54;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .music-control:hover {
+            transform: scale(1.1);
+            background-color: #ff477e;
+        }
+        
+        /* Animations */
+        @keyframes heartbeat {
+            0% { transform: rotate(45deg) scale(1); }
+            5% { transform: rotate(45deg) scale(1.1); }
+            10% { transform: rotate(45deg) scale(1); }
+            15% { transform: rotate(45deg) scale(1.15); }
+            20% { transform: rotate(45deg) scale(1); }
+            100% { transform: rotate(45deg) scale(1); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        /* Responsive design pour mobile */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .letter-container {
+                padding: 25px 20px;
+                margin: 20px 10px;
+            }
+            
+            .letter-content {
+                font-size: 1.05rem;
+            }
+            
+            .open-letter-btn {
+                padding: 16px 35px;
+                font-size: 1.2rem;
+            }
+            
+            .heart-container {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .music-control {
+                bottom: 15px;
+                right: 15px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+            
+            .photo-placeholder {
+                width: 150px;
+                height: 150px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 20px 10px;
+            }
+            
+            .flower {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Fleurs décoratives -->
+        <div class="flower flower-1">🌸</div>
+        <div class="flower flower-2">🌹</div>
+        <div class="flower flower-3">💮</div>
+        
+        <!-- En-tête avec le cœur -->
+        <header class="header">
+            <div class="heart-container">
+                <div class="heart"></div>
+            </div>
+            <h1>Pour toi, mon amour</h1>
+            <p class="subtitle">Clique sur le bouton pour découvrir mon message spécial pour toi</p>
+        </header>
+        
+        <!-- Bouton pour ouvrir la lettre -->
+        <button class="open-letter-btn" id="openLetter">
+            <i class="fas fa-envelope-open-text"></i> Ouvrir la lettre d'amour
+        </button>
+        
+        <!-- Lettre d'amour -->
+        <div class="letter-container" id="letter">
+            <div class="letter-content">
+                <p>Ma chérie,</p>
+                
+                <p>En cette journée de la Saint-Valentin, je voulais te dire à quel point tu comptes pour moi. Chaque moment passé à tes côtés est un cadeau précieux que je chéris profondément.</p>
+                
+                <p>Ton sourire illumine mes journées, ta présence réchauffe mon cœur, et ton amour donne un sens à ma vie. Je me souviens encore de la première fois où on s'est parlé, et comment, petit à petit, tu es devenue la personne la plus importante à mes yeux.</p>
+                
+                <p>Avec toi, chaque jour est une nouvelle aventure, chaque rire partagé est un souvenir précieux, et chaque difficulté surmontée ensemble renforce notre lien. Tu es bien plus qu'une compagne, tu es ma meilleure amie, ma confidente, ma raison de sourire et tout simplement <b>Mon Essentielle</b>.</p>
+                
+                <p>Je te promets de continuer à faire de mon mieux pour te rendre heureuse, pour être présent dans les bons moments comme dans les moins bons, et pour t'aimer chaque jour un peu plus.</p>
+                
+                <p><b>Je t'aime plus que les mots ne pourront jamais l'exprimer.</b></p>
+            </div>
+            <div class="signature">Avec tout mon amour</div>
+        </div>
+        
+        <!-- Section photo (optionnelle, vous pouvez ajouter une vraie photo) -->
+        <div class="photo-section" id="photoSection">
+            <h2>Notre plus beau souvenir</h2>
+            <div class="photo-placeholder">
+                <img src="us.jpeg" alt="Notre plus beau souvenir" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+            </div>
+        </div>
+    </div>
+    
+    <!-- Contrôle de la musique -->
+    <div class="music-control" id="musicControl">
+        <i class="fas fa-music"></i>
+    </div>
+    
+    <!-- Audio pour la musique d'ambiance -->
+    <audio id="backgroundMusic" loop>
+        <source src="pokora-pas-sans-toi.mp3" type="audio/mpeg">
+        Votre navigateur ne supporte pas l'élément audio.
+    </audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const openLetterBtn = document.getElementById('openLetter');
+            const letter = document.getElementById('letter');
+            const musicControl = document.getElementById('musicControl');
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            const photoSection = document.getElementById('photoSection');
+            
+            // Initialiser l'état de la musique
+            let isMusicPlaying = false;
+            backgroundMusic.volume = 0.9;
+            
+            // Ouvrir la lettre
+            openLetterBtn.addEventListener('click', function() {
+                // Masquer le bouton
+                openLetterBtn.style.display = 'none';
+                
+                // Afficher la lettre avec une animation
+                letter.style.display = 'block';
+                
+                // Faire défiler jusqu'à la lettre
+                letter.scrollIntoView({ behavior: 'smooth' });
+                
+                // Démarrer la musique automatiquement
+                if (!isMusicPlaying) {
+                    backgroundMusic.play().then(() => {
+                        isMusicPlaying = true;
+                        musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+                    }).catch(error => {
+                        console.log("Lecture automatique bloquée. L'utilisateur devra cliquer manuellement.");
+                    });
+                }
+                
+                // Afficher la section photo après un délai
+                setTimeout(() => {
+                    photoSection.style.display = 'block';
+                    photoSection.style.opacity = '0';
+                    photoSection.style.animation = 'fadeIn 2s forwards';
+                    
+                    // Faire défiler jusqu'à la photo
+                    setTimeout(() => {
+                        photoSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 500);
+                }, 5000);
+            });
+            
+            // Contrôle de la musique
+            musicControl.addEventListener('click', function() {
+                if (isMusicPlaying) {
+                    backgroundMusic.pause();
+                    musicControl.innerHTML = '<i class="fas fa-music"></i>';
+                } else {
+                    backgroundMusic.play();
+                    musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+                }
+                isMusicPlaying = !isMusicPlaying;
+            });
+            
+            // Ajouter une animation au défilement
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const rate = scrolled * -0.5;
+                
+                // Effet de parallaxe sur les fleurs
+                const flowers = document.querySelectorAll('.flower');
+                flowers.forEach((flower, index) => {
+                    flower.style.transform = `translateY(${rate * 0.1 * (index + 1)}px)`;
+                });
+            });
+            
+            // Message d'accueil dans la console (petit détail amusant)
+            console.log("%c💝 Pour la plus merveilleuse des femmes 💝", "color: #ff0a54; font-size: 18px; font-weight: bold;");
+            console.log("%cCette page a été créée avec tout mon amour pour toi.", "color: #5a3d5c; font-size: 14px;");
+        });
+    </script>
+</body>
+</html>
